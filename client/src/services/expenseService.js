@@ -1,7 +1,21 @@
 import axios from "axios";
 
+const resolveApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (typeof envUrl === "string" && envUrl.trim()) {
+    const normalized = envUrl.trim().replace(/\/+$/, "");
+    return normalized.endsWith("/api") ? normalized : `${normalized}/api`;
+  }
+
+  if (typeof window !== "undefined" && window.location.hostname === "localhost") {
+    return "/api";
+  }
+
+  return "https://expensetracker-ngbx.onrender.com/api";
+};
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "/api",
+  baseURL: resolveApiBaseUrl(),
 });
 
 export const getExpenses = async ({ category = "", sort = "date_desc" } = {}) => {

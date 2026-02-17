@@ -102,12 +102,13 @@ Create `server/.env` from `server/.env.example`:
 PORT=5000
 MONGO_URI=mongodb://127.0.0.1:27017/expense_tracker
 NODE_ENV=development
+CORS_ORIGIN=http://localhost:5173
 ```
 
 Optional: create `client/.env` from `client/.env.example`.
 
 ```env
-VITE_API_URL=/api
+VITE_API_URL=https://expensetracker-ngbx.onrender.com
 ```
 
 If you use MongoDB Atlas, set your Atlas connection string in `server/.env` as `MONGO_URI`.
@@ -144,6 +145,30 @@ npm run build
 
 - MongoDB must be running before starting the backend.
 - Vite dev server proxies `/api` to Express.
+- `VITE_API_URL` can be backend root URL or backend `/api` URL.
+
+## Render Deployment
+
+### Backend (Web Service)
+
+- Root Directory: `server`
+- Build Command: `npm install`
+- Start Command: `npm start`
+- Environment Variables:
+  - `MONGO_URI=<your mongodb atlas uri>`
+  - `NODE_ENV=production`
+  - `CORS_ORIGIN=<your frontend render url>` (optional, comma-separated for multiple origins)
+
+Test after deploy:
+- `GET https://expensetracker-ngbx.onrender.com/api/health`
+
+### Frontend (Static Site)
+
+- Root Directory: `client`
+- Build Command: `npm install && npm run build`
+- Publish Directory: `dist`
+- Environment Variables:
+  - `VITE_API_URL=https://expensetracker-ngbx.onrender.com`
 
 ## Troubleshooting
 
