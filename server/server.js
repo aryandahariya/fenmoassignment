@@ -2,13 +2,12 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const express = require("express");
 const morgan = require("morgan");
-const path = require("path");
 
 const connectDB = require("./config/db");
 const { errorHandler, notFound } = require("./middleware/errorMiddleware");
 const expenseRoutes = require("./routes/expenseRoutes");
 
-dotenv.config({ path: path.resolve(__dirname, ".env") });
+dotenv.config();
 
 const app = express();
 
@@ -16,6 +15,12 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
+// ROOT route
+app.get("/", (_req, res) => {
+  res.send("API Running...");
+});
+
+// Health route
 app.get("/api/health", (_req, res) => {
   res.status(200).json({ message: "API is healthy" });
 });
